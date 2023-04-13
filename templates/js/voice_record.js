@@ -53,13 +53,13 @@ navigator.mediaDevices.getUserMedia({ audio: true })
         });
 
         mediaRecorder.addEventListener('stop', () => {
-            const blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
+            const blob = new Blob(chunks, { type: 'audio/mp3; codecs=opus' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'recording.ogg';
+            // a.download = 'recording.mp3';
             document.body.appendChild(a);
-            a.click();
+            // a.click();
             chunks = [];
           });
         })

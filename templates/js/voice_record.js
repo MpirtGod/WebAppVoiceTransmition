@@ -57,9 +57,9 @@ navigator.mediaDevices.getUserMedia({ audio: true })
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            // a.download = 'recording.mp3';
+            a.download = 'recording.mp3';
             document.body.appendChild(a);
-            // a.click();
+            a.click();
             chunks = [];
           });
         })

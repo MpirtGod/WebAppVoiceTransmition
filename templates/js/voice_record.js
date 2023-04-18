@@ -64,19 +64,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
         document.getElementById('play-button').addEventListener('click', function() {
             var audio = new Audio();
             audio.src = url;
-            if (isPlaying) {
-                audio.pause();
-                audio.currentTime = 0;
-                isPlaying = false
-                }
-            else{
-                audio.play();
-                isPlaying = true
-                }
-
-            audio.addEventListener('ended', function() {
-                isPlaying = false;
-                });
+            audio.play();
             });
 
             // var xhr = new XMLHttpRequest();

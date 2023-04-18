@@ -1,6 +1,7 @@
 const recordButton = document.getElementById('recordButton');
 let mediaRecorder;
 let chunks = [];
+let blob = new Blob();
 var class_timer = document.getElementById('timer');
 var sec = 0;
 var min = 0;
@@ -61,9 +62,10 @@ navigator.mediaDevices.getUserMedia({ audio: true })
         });
 
         mediaRecorder.addEventListener('stop', () => {
-            var blob = new Blob(chunks, { type: 'audio/wav' });
+            blob = new Blob(chunks, { type: 'audio/wav' });
             // const url = URL.createObjectURL(blob);
             // const a = document.createElement('a');
+            chunks = [];
 
         document.getElementById('play-button').addEventListener('click', function() {
             var audio = new Audio();
@@ -85,7 +87,6 @@ navigator.mediaDevices.getUserMedia({ audio: true })
             // a.download = 'recording.wav';
             // document.body.appendChild(a);
             // a.click();
-            chunks = [];
           });
         })
         .catch(error => {

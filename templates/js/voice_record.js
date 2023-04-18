@@ -46,7 +46,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
                 mediaRecorder.stop();
                 clearTimeout(t);
                 class_timer.textContent = "00:00:00";
-                seconds = 0; minutes = 0; hours = 0;
+                sec = 0; min = 0; hrs = 0;
                 recordButton.textContent = 'Записать голос ▶️';
             }
         });
@@ -59,6 +59,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
             const blob = new Blob(chunks, { type: 'audio/wav' });
             url = URL.createObjectURL(blob);
             chunks = [];
+
             // const a = document.createElement('a');
 
         document.getElementById('play-button').addEventListener('click', function() {

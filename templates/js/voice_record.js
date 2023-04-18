@@ -31,6 +31,14 @@ function timer() {
     t = setTimeout(add, 1000);
 }
 
+function save_audio(blob) {
+    document.getElementById('play-button').addEventListener('click', function() {
+            var audio = new Audio();
+            audio.src = URL.createObjectURL(blob);
+            audio.play();
+            });
+}
+
 navigator.mediaDevices.getUserMedia({ audio: true })
     .then(stream => {
         mediaRecorder = new MediaRecorder(stream);
@@ -53,16 +61,35 @@ navigator.mediaDevices.getUserMedia({ audio: true })
         });
 
         mediaRecorder.addEventListener('stop', () => {
-            const blob = new Blob(chunks, { type: 'audio/mp3; codecs=opus' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'recording.mp3';
-            document.body.appendChild(a);
-            a.click();
+            var blob = new Blob(chunks, { type: 'audio/wav' });
+            // const url = URL.createObjectURL(blob);
+            // const a = document.createElement('a');
+
+        document.getElementById('play-button').addEventListener('click', function() {
+            var audio = new Audio();
+            audio.src = URL.createObjectURL(blob);
+            audio.play();
+            });
+
+            // var xhr = new XMLHttpRequest();
+            // xhr.open('POST', '/upload-audio', true);
+            // xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+            // xhr.onreadystatechange = function() {
+            //     if (xhr.readyState === 4 && xhr.status === 200) {
+            //         console.log('Audio uploaded successfully');
+            //     }
+            // };
+            // xhr.send(blob);
+
+            // a.href = url;
+            // a.download = 'recording.wav';
+            // document.body.appendChild(a);
+            // a.click();
             chunks = [];
           });
         })
         .catch(error => {
             console.error(error);
         });
+        // save_audio(blob)
+

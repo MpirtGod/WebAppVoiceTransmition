@@ -1,7 +1,8 @@
 const recordButton = document.getElementById('recordButton');
 let mediaRecorder;
 let chunks = [];
-let blob = new Blob();
+let url;
+let isPlaying = false;
 var class_timer = document.getElementById('timer');
 var sec = 0;
 var min = 0;
@@ -32,13 +33,6 @@ function timer() {
     t = setTimeout(add, 1000);
 }
 
-function save_audio(blob) {
-    document.getElementById('play-button').addEventListener('click', function() {
-            var audio = new Audio();
-            audio.src = URL.createObjectURL(blob);
-            audio.play();
-            });
-}
 
 navigator.mediaDevices.getUserMedia({ audio: true })
     .then(stream => {
@@ -62,15 +56,30 @@ navigator.mediaDevices.getUserMedia({ audio: true })
         });
 
         mediaRecorder.addEventListener('stop', () => {
-            blob = new Blob(chunks, { type: 'audio/wav' });
-            // const url = URL.createObjectURL(blob);
-            // const a = document.createElement('a');
+            const blob = new Blob(chunks, { type: 'audio/wav' });
+            url = URL.createObjectURL(blob);
             chunks = [];
+            // const a = document.createElement('a');
 
         document.getElementById('play-button').addEventListener('click', function() {
             var audio = new Audio();
-            audio.src = URL.createObjectURL(blob);
-            audio.play();
+            player.preload = "auto";
+            player.addEventListener('ended', function(){ // слушаем окончание трека
+                el.innerText = "Done";
+                playing = false;
+            });
+            el.addEventListener('click', playPause); // слушаем нажатие на кнопку
+
+            function playPause() {
+              if( playing) {
+                    player.pause();
+                    el.innerText = "Paused";
+              } else {
+                    player.play();
+                    el.innerText = "Playing..";
+              }
+              playing = !playing;
+            }
             });
 
             // var xhr = new XMLHttpRequest();
@@ -92,5 +101,3 @@ navigator.mediaDevices.getUserMedia({ audio: true })
         .catch(error => {
             console.error(error);
         });
-        // save_audio(blob)
-

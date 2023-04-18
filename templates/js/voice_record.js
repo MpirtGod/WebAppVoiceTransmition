@@ -63,23 +63,20 @@ navigator.mediaDevices.getUserMedia({ audio: true })
 
         document.getElementById('play-button').addEventListener('click', function() {
             var audio = new Audio();
-            player.preload = "auto";
-            player.addEventListener('ended', function(){ // слушаем окончание трека
-                el.innerText = "Done";
-                playing = false;
-            });
-            el.addEventListener('click', playPause); // слушаем нажатие на кнопку
+            audio.src = url;
+            if (isPlaying) {
+                audio.pause();
+                audio.currentTime = 0;
+                isPlaying = false
+                }
+            else{
+                audio.play();
+                isPlaying = true
+                }
 
-            function playPause() {
-              if( playing) {
-                    player.pause();
-                    el.innerText = "Paused";
-              } else {
-                    player.play();
-                    el.innerText = "Playing..";
-              }
-              playing = !playing;
-            }
+            audio.addEventListener('ended', function() {
+                isPlaying = false;
+                });
             });
 
             // var xhr = new XMLHttpRequest();

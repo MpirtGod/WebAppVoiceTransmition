@@ -11,7 +11,7 @@ var hrs = 0;
 var t;
 var requestId;
 let url;
-var pause;
+// var pause;
 
 function tick(){
     sec++;
@@ -43,8 +43,8 @@ function draw() {
     sourceNode.connect(analyserNode);
     var dataArray = new Uint8Array(analyserNode.frequencyBinCount);
       // Подготавливаем canvas для очередного кадра
-    if (!pause) {
-    requestId = requestAnimationFrame(draw);}
+    // if (!pause) {
+    requestId = requestAnimationFrame(draw);
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
       // Получаем данные о звуке
     analyserNode.getByteFrequencyData(dataArray);
@@ -136,6 +136,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     document.getElementById('play').addEventListener('click', function() {
         var audio = new Audio();
         audio.addEventListener('play', function() {
+            if (playButton.textContent === "Воспроизвести") {
             playButton.id = "playing"
             playButton.textContent = "Проигрывается"
             playButton.setAttribute('disabled', '')
@@ -143,7 +144,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
             analyserNode = audioContext.createAnalyser();
             sourceNode.connect(analyserNode);
             analyserNode.connect(audioContext.destination);
-            draw();
+            draw();}
         });
         audio.addEventListener('ended', function() {
             playButton.id = "play"
@@ -152,12 +153,22 @@ navigator.mediaDevices.getUserMedia({ audio: true })
             cancelAnimationFrame(requestId);
             canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
         });
-        audio.addEventListener('ended', function() {
-            if (playButton.textContent ===
-            playButton.textContent = "Воспроизвести"
-            playButton.removeAttribute('disabled')
-            cancelAnimationFrame(requestId);
-            canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+        // audio.addEventListener('pause', function() {
+        //     if (playButton.textContent === "Проигрывается") {
+        //        pause = true;
+        //        playButton.textContent = "Пауза"
+        //         audio.pause();
+        //        cancelAnimationFrame(requestId);
+        //        // playButton.removeAttribute('disabled')
+        //     }
+        //     if (playButton.textContent === "Пауза") {
+        //        pause = false;
+        //        draw()
+        //        playButton.id = "playing"
+        //        playButton.textContent = "Проигрывается"
+        //        audio.play()
+        //     }
+        // });
         audio.src = url;
         audio.play();
     });

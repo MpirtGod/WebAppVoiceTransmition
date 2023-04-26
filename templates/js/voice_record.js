@@ -55,8 +55,11 @@ navigator.mediaDevices.getUserMedia({ audio: true })
       var x = 0;
       for (var i = 0; i < dataArray.length; i++) {
         barHeight = dataArray[i] / 2;
-        canvasCtx.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
-        canvasCtx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+        if (barHeight < 1) { // Если нет звука, рисуем один пиксель
+            barHeight = 1;
+        }
+        canvasCtx.fillStyle = `rgb(${barHeight * 2},175,80)`;
+        canvasCtx.fillRect(x, (canvas.height - barHeight) / 2, barWidth, barHeight);
         x += barWidth;
       }
     }

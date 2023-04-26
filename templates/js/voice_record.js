@@ -13,7 +13,6 @@ var requestId;
 let url;
 var pause;
 var audio;
-console.log(audio)
 
 function tick(){
     sec++;
@@ -45,8 +44,7 @@ function draw() {
     sourceNode.connect(analyserNode);
     var dataArray = new Uint8Array(analyserNode.frequencyBinCount);
       // Подготавливаем canvas для очередного кадра
-    if (!pause) {
-    requestId = requestAnimationFrame(draw);}
+    requestId = requestAnimationFrame(draw);
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
       // Получаем данные о звуке
     analyserNode.getByteFrequencyData(dataArray);
@@ -82,6 +80,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     // Начинаем запись при нажатии на кнопку
     document.getElementById('record').addEventListener('click', function() {
       if (mediaRecorder.state === 'inactive') {
+                class_timer.textContent = "00:00:00";
                 timer();
                 recordButton.id = "stop"
                 mediaRecorder.start();
@@ -94,7 +93,6 @@ navigator.mediaDevices.getUserMedia({ audio: true })
                 mediaRecorder.stop();
                 chunks = []
                 clearTimeout(t);
-                class_timer.textContent = "00:00:00";
                 sec = 0; min = 0; hrs = 0;
                 recordButton.textContent = 'Записать голос ▶️';
                 cancelAnimationFrame(requestId)
@@ -136,23 +134,27 @@ navigator.mediaDevices.getUserMedia({ audio: true })
 // }
 
     document.getElementById('play').addEventListener('click', function() {
+        if (url === undefined) {
+            return;
+        }
+
         if (audio !== undefined && !pause) {
-            playButton.textContent = "Пауза";
-            playButton.id = "pause"
             pause = true;
             audio.pause()
+            return
         }
+
         if (audio !== undefined && pause) {
-            playButton.textContent = "Продолжить";
-            playButton.id = "resume"
             pause = false;
             audio.play()
+            return
         }
+
         audio = new Audio();
         pause = false;
         audio.addEventListener('play', function() {
             playButton.id = "playing"
-            playButton.textContent = "Проигрывается"
+            playButton.textContent = "Проигрывается..."
             // playButton.setAttribute('disabled', '')
             sourceNode = audioContext.createMediaElementSource(audio);
             analyserNode = audioContext.createAnalyser();
@@ -166,16 +168,11 @@ navigator.mediaDevices.getUserMedia({ audio: true })
             // playButton.removeAttribute('disabled')
             cancelAnimationFrame(requestId);
             canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+            audio = undefined
         });
         audio.addEventListener('pause', function() {
-               playButton.textContent = "Пауза"
-               cancelAnimationFrame(requestId);
-               // playButton.removeAttribute('disabled')
-               //
-               // draw()
-               // playButton.id = "playing"
-               // playButton.textContent = "Проигрывается"
-
+               playButton.textContent = "Продолжить"
+               playButton.id = "pause"
         });
         audio.src = url;
         audio.play();

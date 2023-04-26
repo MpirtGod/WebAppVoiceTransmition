@@ -1,4 +1,5 @@
 const recordButton = document.getElementById('record');
+const playButton = document.getElementById('play');
 var class_timer = document.getElementById('timer');
 var canvas = document.getElementById('canvas');
 var canvasCtx = canvas.getContext('2d');
@@ -133,6 +134,8 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     document.getElementById('play').addEventListener('click', function() {
         var audio = new Audio();
         audio.addEventListener('play', function() {
+            playButton.id = "playing"
+            playButton.textContent = "Проигрывается"
             sourceNode = audioContext.createMediaElementSource(audio);
             analyserNode = audioContext.createAnalyser();
             sourceNode.connect(analyserNode);
@@ -140,6 +143,8 @@ navigator.mediaDevices.getUserMedia({ audio: true })
             draw();
         });
         audio.addEventListener('ended', function() {
+            playButton.id = "play"
+            playButton.textContent = "Воспроизвести"
             cancelAnimationFrame(requestId);
             canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
         });

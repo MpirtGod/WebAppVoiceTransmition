@@ -38,7 +38,25 @@ canvas {
   margin: 0 auto;
 }
 
+#stop {
+  display: block;
+  background-color: #ce1414;
+  margin: 0 auto;
+}
+
 #play {
+  margin: 10px auto 0;
+}
+
+#playing {
+  display: block;
+  background-color: #eaab0a;
+  margin: 10px auto 0;
+}
+
+#pause {
+  display: block;
+  background-color: #eaab0a;
   margin: 10px auto 0;
 }
 

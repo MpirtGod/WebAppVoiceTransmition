@@ -38,6 +38,12 @@ canvas {
   margin: 0 auto;
 }
 
+#stop {
+  display: block;
+  background-color: #ce1414;
+  margin: 0 auto;
+}
+
 #play {
   margin: 10px auto 0;
 }

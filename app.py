@@ -1,14 +1,12 @@
 import os
 from flask import Flask, render_template, send_from_directory, request
 
-
 root_dir = os.path.dirname(os.path.abspath(__file__))
 template_folder = os.path.join(root_dir, "templates")
 js_dir = os.path.join(template_folder, 'js')
 css_dir = os.path.join(template_folder, 'css')
 
 app = Flask(__name__, template_folder=template_folder)
-
 
 
 @app.route('/')
@@ -24,6 +22,7 @@ def send_js(path):
 @app.route("/css/<path:path>")
 def send_css(path):
     return send_from_directory(css_dir, path)
+
 
 @app.route('/upload-audio', methods=['POST'])
 def upload_audio():

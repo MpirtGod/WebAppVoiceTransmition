@@ -1,5 +1,9 @@
 const recordButton = document.getElementById('record');
 var class_timer = document.getElementById('timer');
+var canvas = document.getElementById('canvas');
+var canvasCtx = canvas.getContext('2d');
+var sourceNode;
+var analyserNode;
 var sec = 0;
 var min = 0;
 var hrs = 0;
@@ -31,38 +35,40 @@ function timer() {
     t = setTimeout(add, 1000);
 }
 
-
-navigator.mediaDevices.getUserMedia({ audio: true })
-  .then(function(stream) {
-    var audioContext = new AudioContext();
-    var sourceNode = audioContext.createMediaStreamSource(stream);
-    var analyserNode = audioContext.createAnalyser();
+function draw() {
     analyserNode.fftSize = 2048;
-    sourceNode.connect(analyserNode);
     // analyserNode.connect(audioContext.destination);
+    sourceNode.connect(analyserNode);
     var dataArray = new Uint8Array(analyserNode.frequencyBinCount);
-    var canvas = document.getElementById('canvas');
-    var canvasCtx = canvas.getContext('2d');
-    function draw() {
       // Подготавливаем canvas для очередного кадра
-      requestId = requestAnimationFrame(draw);
-      canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+    requestId = requestAnimationFrame(draw);
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
       // Получаем данные о звуке
-      analyserNode.getByteFrequencyData(dataArray);
+    analyserNode.getByteFrequencyData(dataArray);
       // Рисуем столбцы визуализации
-      var barWidth = canvas.width / 150;
-      var barHeight;
-      var x = 0;
-      for (var i = 0; i < dataArray.length; i++) {
+    var barWidth = canvas.width / 150;
+    var barHeight;
+    var x = 0;
+    for (var i = 0; i < dataArray.length; i++) {
         barHeight = dataArray[i] / 2;
         if (barHeight < 1) { // Если нет звука, рисуем один пиксель
             barHeight = 1;
         }
-        canvasCtx.fillStyle = `rgb(${barHeight * 2},175,80)`;
+        canvasCtx.fillStyle = `rgb(${barHeight * 1.3},175,80)`;
         canvasCtx.fillRect(x, (canvas.height - barHeight) / 2, barWidth, barHeight);
         x += barWidth;
       }
     }
+
+
+navigator.mediaDevices.getUserMedia({ audio: true })
+  .then(function(stream) {
+    var audioContext = new AudioContext();
+    // analyserNode.fftSize = 2048;
+    // sourceNode.connect(analyserNode);
+    // // analyserNode.connect(audioContext.destination);
+    // var dataArray = new Uint8Array(analyserNode.frequencyBinCount);
+
     // Запускаем визуализацию
     // Создаем MediaRecorder для записи звука
     var mediaRecorder = new MediaRecorder(stream);
@@ -72,10 +78,14 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     document.getElementById('record').addEventListener('click', function() {
       if (mediaRecorder.state === 'inactive') {
                 timer();
+                recordButton.id = "stop"
                 mediaRecorder.start();
                 recordButton.textContent = 'Остановить запись ⏹️';
+                sourceNode = audioContext.createMediaStreamSource(stream);
+                analyserNode = audioContext.createAnalyser();
                 draw();
             } else {
+                recordButton.id = "record"
                 mediaRecorder.stop();
                 chunks = []
                 clearTimeout(t);
@@ -97,22 +107,46 @@ navigator.mediaDevices.getUserMedia({ audio: true })
       // Создаем ссылку на Blob
       url = URL.createObjectURL(blob);
       // Воспроизводим записанный звук
+      // var xhr = new XMLHttpRequest();
+            // xhr.open('POST', '/upload-audio', true);
+            // xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+            // xhr.onreadystatechange = function() {
+            //     if (xhr.readyState === 4 && xhr.status === 200) {
+            //         console.log('Audio uploaded successfully');
+            //     }
+            // };
+            // xhr.send(blob);
     });
 
+//     function loadSound(url) {
+//   var request = new XMLHttpRequest();
+//   request.open('GET', url, true);
+//   request.responseType = 'arraybuffer';
+//   request.onload = function() {
+//     audioCtx.decodeAudioData(request.response, function(buffer) {
+//       audioBuffer = buffer;
+//     });
+//   };
+//   request.send();
+// }
+
     document.getElementById('play').addEventListener('click', function() {
-      var audio = new Audio();
-      // audio.addEventListener('play', function() {
-      //     draw()
-      // });
-      //
-      // audio.addEventListener('ended', function() {
-      //     cancelAnimationFrame(requestId);
-      //     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-      // });
-      audio.src = url;
-      audio.play();
+        var audio = new Audio();
+        audio.addEventListener('play', function() {
+            sourceNode = audioContext.createMediaElementSource(audio);
+            analyserNode = audioContext.createAnalyser();
+            sourceNode.connect(analyserNode);
+            analyserNode.connect(audioContext.destination);
+            draw();
+        });
+        audio.addEventListener('ended', function() {
+            cancelAnimationFrame(requestId);
+            canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+        audio.src = url;
+        audio.play();
     });
-    // Обрабатываем данные после остановки записи
+        // Обрабатываем данные после остановки записи
   })
   .catch(function(error) {
     console.log('Error:', error);

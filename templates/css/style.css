@@ -1,97 +1,101 @@
+html, body {
+  weight: 100%;
+  height: 100%;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-image: url("images/bg.jpeg");
+ margin: 0;
+ padding: 0;
+ font-family: Arial, sans-serif;
 }
 
-button {
-  display: block;
-  font-size: 16px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: none;
-  background-color: #4CAF50;
-  color: white;
-  cursor: pointer;
+header {
+ background-color: #333;
+ color: #fff;
+ padding: 20px;
+ padding-right: 10px;
 }
 
-button:hover {
-  background-color: #3e8e41;
+nav ul {
+ list-style: none;
+ margin: 0;
+ padding: 0;
+ display: flex;
 }
 
-h2 {
-  font-size: 24px;
-  margin-top: 20px;
+nav li {
+ margin-right: 20px;
 }
 
-#timer {
-  display: block;
-  font-family: monospace;
-  text-align: center;
-  color: #dadada;
+nav a {
+ color: #fff;
+ text-decoration: none;
+}
+
+main {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ height: 80vh;
 }
 
 canvas {
-  /*border: 1px solid #ccc;*/
-  margin: 0 auto;
-  margin-top: 20px;
-  display: block;
+ border: 1px solid #333;
+}
+
+h1 {
+ font-size: 2rem;
+ margin-top: 20px;
+}
+
+.buttons {
+ margin-top: 20px;
+}
+
+button {
+ background-color: #333;
+ color: #fff;
+ border: none;
+ padding: 10px 25px;
+ margin-right: 10px;
+ cursor: pointer;
+ width: 120px;
+ height: 36px;
+}
+
+button:hover {
+ background-color: #555;
 }
 
 #record {
-  margin: 0 auto;
+    background-color: #FF0000;
 }
 
-#stop {
-  display: block;
-  background-color: #ce1414;
-  margin: 0 auto;
+.photo {
+ margin: 20px;
+ width: 300px;
 }
 
-#stop:hover {
-  background-color: #af1212;
+img {
+ width: 100%;
 }
 
-#play {
-  margin: 10px auto 0;
+h2 {
+ margin-top: 10px;
 }
 
-#playing {
-  display: block;
-  background-color: #eaab0a;
-  margin: 10px auto 0;
-}
-
-#pause {
-  display: block;
-  background-color: #4CAF50;
-  margin: 10px auto 0;
-}
-
-#playing:hover {
-  background-color: #c28f08;
-}
-
-#pause:hover {
-  background-color: #3e8e41;
+p {
+ font-size: 0.8rem;
+ line-height: 1.2;
 }
 
 footer {
-    position: fixed;
-    left: 0; bottom: 0;
-    background: rgba(149, 157, 153, 0.5);
-    color: #fff;
-    width: 100%;
-    height: 100px;
-    z-index: 2;
+ background-color: #333;
+ color: #fff;
+ padding: 10px 0;
+ text-align: center;
+ position: absolute;
+ bottom: 0;
+ width: 100%;
 }
-
-footer p {
-    font-size: 15px;
-    padding-left: 20px;
-    padding-right: 10px;
-    text-align: right;
-}
-
-/*canvas {*/
-/*    background-color: white;*/
-/*}*/

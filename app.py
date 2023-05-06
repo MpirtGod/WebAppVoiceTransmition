@@ -10,8 +10,13 @@ app = Flask(__name__, template_folder=template_folder)
 
 
 @app.route('/')
-def hello_world():
+def index():
     return render_template("index.html")
+
+
+@app.route('/about')
+def about():
+    return render_template("about.html")
 
 
 @app.route("/js/<path:path>")
@@ -26,10 +31,12 @@ def send_css(path):
 
 @app.route('/upload-audio', methods=['POST'])
 def upload_audio():
-    file = request.files['audio']
-    file.save('audio.wav')
+    file = request.files['voice']
+    file_content = file.read()
+    with open('audio.wav', 'wb') as f:
+        f.write(file_content)
     return 'Audio uploaded successfully'
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

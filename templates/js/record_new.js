@@ -1,6 +1,7 @@
 const recordButton = document.getElementById('record');
 const recognButton = document.getElementById('recogn');
 const playButton = document.getElementById('play');
+const upload = document.getElementById('upload')
 
 const timer = document.getElementById('timer');
 let interval;
@@ -93,6 +94,7 @@ function sendVoice(form) {
   request.open("POST", "/upload-audio");
   request.send(form);
 }
+
 
 async function getMedia(constraints) {
   let stream = null;

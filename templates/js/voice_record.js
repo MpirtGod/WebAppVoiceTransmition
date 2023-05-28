@@ -155,7 +155,6 @@ navigator.mediaDevices.getUserMedia({ audio: true })
         audio.addEventListener('play', function() {
             playButton.id = "playing"
             playButton.textContent = "Проигрывается..."
-            // playButton.setAttribute('disabled', '')
             sourceNode = audioContext.createMediaElementSource(audio);
             analyserNode = audioContext.createAnalyser();
             sourceNode.connect(analyserNode);
@@ -165,7 +164,6 @@ navigator.mediaDevices.getUserMedia({ audio: true })
         audio.addEventListener('ended', function() {
             playButton.id = "play"
             playButton.textContent = "Воспроизвести"
-            // playButton.removeAttribute('disabled')
             cancelAnimationFrame(requestId);
             canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
             audio = undefined

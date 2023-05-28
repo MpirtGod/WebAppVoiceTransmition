@@ -1,5 +1,5 @@
 const recordButton = document.getElementById('record');
-const stopButton = document.getElementById('stop');
+const recognButton = document.getElementById('recogn');
 const playButton = document.getElementById('play');
 
 const timer = document.getElementById('timer');
@@ -16,6 +16,10 @@ let requestId;
 let url;
 let audio;
 let pause;
+let blob;
+
+const loaderWrapper = document.querySelector('.loader-wrapper');
+const loader = document.querySelector('.loader');
 
 function startTimer() {
   interval = setInterval(function() {
@@ -42,6 +46,14 @@ function resetTimer() {
   minutes = 0;
   hours = 0;
   timer.innerHTML = "00:00:00";
+}
+
+function showLoader() {
+  loaderWrapper.style.display = 'flex';
+}
+
+function hideLoader() {
+  loaderWrapper.style.display = 'none';
 }
 
 function draw() {
@@ -73,6 +85,7 @@ function sendVoice(form) {
     if (request.status != 200) {
       alert("Не приняли!");
     } else {
+      hideLoader();
       alert(request.responseText);
     }
   }
@@ -107,6 +120,9 @@ async function getMedia(constraints) {
       stopTimer();
       cancelAnimationFrame(requestId);
       canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+      playButton.disabled = false;
+      playButton.style.cursor = "pointer";
       return;
     }
 
@@ -115,6 +131,13 @@ async function getMedia(constraints) {
     resetTimer();
     startTimer();
     mediaRecorder.start();
+    cancelAnimationFrame(requestId);
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+    playButton.disabled = true;
+    playButton.style.cursor = "default";
+
+    audio = undefined;
     sourceNode = audioContext.createMediaStreamSource(stream);
     analyserNode = audioContext.createAnalyser();
     draw();
@@ -125,12 +148,16 @@ async function getMedia(constraints) {
   });
 
   mediaRecorder.addEventListener('stop', function() {
-    let blob = new Blob(chunks, { type: 'audio/wav' });
+    blob = new Blob(chunks, { type: 'audio/wav' });
+    url = URL.createObjectURL(blob);
+    chunks = [];
+  });
+
+  recognButton.addEventListener('click', function() {
     let fd = new FormData();
     fd.append('voice', blob);
     sendVoice(fd);
-    url = URL.createObjectURL(blob);
-    chunks = [];
+    showLoader();
   });
 
   playButton.addEventListener('click', function() {
@@ -139,12 +166,16 @@ async function getMedia(constraints) {
     }
 
     if (audio !== undefined && !pause) {
+      recordButton.disabled = false;
+      recordButton.style.cursor = "pointer";
       pause = true;
       audio.pause()
       return
     }
 
     if (audio !== undefined && pause) {
+      recordButton.disabled = true;
+      recordButton.style.cursor = "default";
       pause = false;
       audio.play()
       return
@@ -153,9 +184,34 @@ async function getMedia(constraints) {
     audio = new Audio();
     pause = false;
 
-    audio.addEventListener('play', function() {
+    recordButton.disabled = true;
+    recordButton.style.cursor = "default";
 
+    audio.addEventListener('play', function() {
+      playButton.textContent = "Пауза";
+      sourceNode = audioContext.createMediaElementSource(audio);
+      analyserNode = audioContext.createAnalyser();
+      sourceNode.connect(analyserNode);
+      analyserNode.connect(audioContext.destination);
+      draw();
     });
+
+    audio.addEventListener('ended', function() {
+      recordButton.disabled = false;
+      recordButton.style.cursor = "pointer";
+
+      playButton.textContent = "Прослушать";
+      cancelAnimationFrame(requestId);
+      canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+      audio = undefined;
+    });
+
+    audio.addEventListener('pause', function() {
+      playButton.textContent = "Продолжить";
+    });
+
+    audio.src = url;
+    audio.play();
   });
 }
 

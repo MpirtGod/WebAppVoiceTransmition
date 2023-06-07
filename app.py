@@ -11,6 +11,7 @@ root_dir = os.path.dirname(os.path.abspath(__file__))
 template_folder = os.path.join(root_dir, "templates")
 js_dir = os.path.join(template_folder, 'js')
 css_dir = os.path.join(template_folder, 'css')
+img_dir = os.path.join(template_folder, 'images')
 
 model = ModelInit()
 
@@ -36,6 +37,10 @@ def about():
 @app.route("/js/<path:path>")
 def send_js(path):
     return send_from_directory(js_dir, path)
+
+@app.route("/images/<path:path>")
+def send_images(path):
+    return send_from_directory(img_dir, path)
 
 
 @app.route("/css/<path:path>")

@@ -3,3 +3,15 @@ main {
  flex-wrap: wrap;
  justify-content: center;
 }
+
+img {
+ width: 300px;
+ height: 300px;
+ border-radius: 50%;
+ border: black 1px solid;
+}
+
+.photo {
+ text-align: center;
+ z-index: 1;
+}

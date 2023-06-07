@@ -84,6 +84,7 @@ function sendVoice(form) {
 
   request.onload = function() {
     if (request.status != 200) {
+      hideLoader();
       alert("Не приняли!");
     } else {
       hideLoader();
@@ -218,3 +219,17 @@ async function getMedia(constraints) {
 }
 
 getMedia({ audio: true });
+
+
+function loadFile() {
+  var fileInput = document.getElementById("fileInput");
+  var file = fileInput.files[0];
+
+  var reader = new FileReader();
+  reader.onload = function(event) {
+    var contents = event.target.result;
+    // обработка содержимого файла
+  };
+  reader.readAsArrayBuffer(file);
+  console.log(reader)
+}

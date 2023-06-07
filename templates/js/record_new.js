@@ -85,6 +85,7 @@ function sendVoice(form) {
 
   request.onload = function() {
     if (request.status != 200) {
+      hideLoader();
       alert("Не приняли!");
     } else {
       hideLoader();

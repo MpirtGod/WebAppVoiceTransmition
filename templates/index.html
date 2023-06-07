@@ -15,13 +15,17 @@
   </nav>
  </header>
  <main>
-  <canvas id="canvas" width="370" height="160"></canvas>
+  <canvas id="canvas" width="700" height="200"></canvas>
   <h1 id="timer">00:00:00</h1>
   <div class="buttons">
    <button id="record">Запись</button>
    <button id="play">Прослушать</button>
    <button id="recogn">Распознать</button>
-   <button id="upload">Загрузить файл</button>
+   <label class="input-file">
+     <input type="file" name="file" id="file_input">
+     <span>Выберите файл</span>
+   </label>
+   <button id="upload">Загрузить</button>
   </div>
   <div class="loader-wrapper">
    <div class="loader"></div>

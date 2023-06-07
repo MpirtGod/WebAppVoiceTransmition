@@ -1,7 +1,8 @@
 const recordButton = document.getElementById('record');
 const recognButton = document.getElementById('recogn');
 const playButton = document.getElementById('play');
-const upload = document.getElementById('upload')
+const upload = document.getElementById('upload');
+const input = document.querySelector('.input-file input[type=file]');
 
 const timer = document.getElementById('timer');
 let interval;
@@ -214,6 +215,31 @@ async function getMedia(constraints) {
 
     audio.src = url;
     audio.play();
+  });
+
+  upload.addEventListener('click', function() {
+    let file = input.files[0];
+    console.log(file);
+
+    let formData = new FormData();
+    formData.append("file", file);
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "/upload_wav", true);
+
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        alert(xhr.responseText);
+      }
+    }
+
+    xhr.send(formData);
+    console.log("Файл отправлен!");
+  });
+
+  input.addEventListener('change', function() {
+     var file = this.files[0];
+     alert(file.name);
   });
 }
 

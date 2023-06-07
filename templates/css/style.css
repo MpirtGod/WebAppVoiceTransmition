@@ -61,7 +61,53 @@ button {
  margin-right: 10px;
  cursor: pointer;
  width: 120px;
- height: 36px;
+ height: 50px;
+ font-size: 14px;
+}
+
+#file_input {
+ display: none;
+}
+
+.input-file span {
+	display: inline-block;
+	cursor: pointer;
+	color: rgb(255 255 255);
+	text-align: center;
+	background-color: #333;
+	vertical-align: middle;
+	border: none;
+	margin: 0;
+	padding: 0;
+	padding-top: 15px;
+	width: 160px;
+	height: 34px;
+    margin-right: 10px;
+}
+
+.input-file input[type=file] {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+.input-file input[type=file]:focus + span {
+	box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.input-file:hover span {
+	background-color: gray;
+}
+
+.input-file:active span {
+	background-color: black;
+}
+
+.input-file input[type=file]:disabled + span {
+	background-color: #eee;
 }
 
 button:hover {

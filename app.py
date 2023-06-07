@@ -2,7 +2,6 @@ import os
 import io
 import sys
 import librosa
-import torch
 from flask import Flask, render_template, send_from_directory, request
 from modelinit import ModelInit
 # from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
@@ -56,6 +55,9 @@ def send_css(path):
 def upload_audio():
     data = request.files.get('voice')
     if data:
+        # file_content = data.read()
+        # with open('audio.wav', 'wb') as f:
+        #     f.write(file_content)
         tmp = io.BytesIO(data.read())
         y, sr = librosa.load(tmp, sr=16000)
         text = model.predict(y)
@@ -67,6 +69,19 @@ def upload_audio():
     # with open('audio.wav', 'wb') as f:
     #     f.write(file_content)
     # return 'Audio uploaded successfully'
+
+
+@app.route('/upload_wav', methods=['POST'])
+def upload_wav():
+    if 'file' not in request.files:
+        return 'Файл отсутсвует'
+    file = request.files['file']
+    if file.filename == '':
+        return 'Файл отсутсвует'
+    tmp = io.BytesIO(file.read())
+    y, sr = librosa.load(tmp, sr=16000)
+    text = model.predict(y)
+    return text
 
 
 if __name__ == '__main__':

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Главная</title>
+ <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+ <header>
+  <nav>
+   <ul>
+    <li><a href="/">Главная</a></li>
+    <li><a href="/about">О нас</a></li>
+    <li><a href="#">Контакты</a></li>
+   </ul>
+  </nav>
+ </header>
+ <main>
+  <canvas id="canvas" width="700" height="200"></canvas>
+  <h1 id="timer">00:00:00</h1>
+  <div class="buttons">
+   <button id="record">Запись</button>
+   <button id="play">Прослушать</button>
+   <button id="recogn">Распознать</button>
+   <label class="input-file">
+     <input type="file" name="file" id="file_input">
+     <span>Выберите файл</span>
+   </label>
+   <button id="upload">Загрузить</button>
+  </div>
+  <div class="loader-wrapper">
+   <div class="loader"></div>
+  </div>
+ </main>
+ <footer>
+  <p>&copy; 2023 Gang Bros</p>
+ </footer>
+ <script src="js/record_new.js"></script>
+</body>
+</html>

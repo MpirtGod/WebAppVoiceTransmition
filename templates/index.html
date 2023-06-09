@@ -1,39 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
- <title>Главная</title>
- <link rel="stylesheet" type="text/css" href="css/style.css">
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
+    <link type="text/css" href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 </head>
 <body>
- <header>
-  <nav>
-   <ul>
-    <li><a href="/">Главная</a></li>
-    <li><a href="/about">О нас</a></li>
-    <li><a href="#">Контакты</a></li>
-   </ul>
-  </nav>
- </header>
- <main>
-  <canvas id="canvas" width="700" height="200"></canvas>
-  <h1 id="timer">00:00:00</h1>
-  <div class="buttons">
-   <button id="record">Запись</button>
-   <button id="play">Прослушать</button>
-   <button id="recogn">Распознать</button>
-   <label class="input-file">
-     <input type="file" name="file" id="file_input">
-     <span>Выберите файл</span>
-   </label>
-   <button id="upload">Загрузить</button>
-  </div>
-  <div class="loader-wrapper">
-   <div class="loader"></div>
-  </div>
- </main>
- <footer>
-  <p>&copy; 2023 Gang Bros</p>
- </footer>
- <script src="js/record_new.js"></script>
+    <div id="wrapper">
+        <div id="header">
+            <h1>Голосо-распознаватель Beta V1</h1>
+        </div>
+        <div id="main">
+            <p>Приложение является "внешней оберткой" для нейронной сети, сделанной для
+            <a href="https://xn--e1aajagmjdbheh6azd.xn--p1ai/projects/2718">исследовательского проекта</a>.
+            Нужно сказать, что нейросеть обучена на голосе одного конкретного человека,
+            поэтому для вас она может генерировать бессмыслицу.
+            </p>
+            <p>Кроме распознавания голоса в текст, можно полученный текст озвучить мужским
+                или женским голосом. Это возможно благодаря open-source модели нейронной сети
+            <a href="https://github.com/snakers4/silero-models">Silero TTS</a>.</p>
+            <div id="functional">
+                <div id="recorder">
+                    <canvas width="220" height="60"></canvas>
+                    <div id="buttons">
+                        <button id="record"><span></span></button>
+                        <button id="stop" disabled><span></span></button>
+                        <button id="play" disabled><span></span></button>
+                    </div>
+                </div>
+                <div id="formDate">
+                    <h2>Отправка на сервер</h2>
+                    <div class="content">
+                        <p>Перед отправкой выберите источник (записанный голос или файл),
+                        а так же выберите тип синтезируемого голоса. Синтезированный голос
+                        можно будет прослушать в плеере, при этом ваша запись будет стерта!</p>
+                        <form>
+                            <p>Источник:
+                                <label>Запись
+                                    <input type="radio" name="source" value="record" checked>
+                                </label>
+                                <label>Файл
+                                    <input type="radio" name="source" value="file">
+                                </label>
+                            </p>
+                            <p>Тип голоса:
+                                <label>Мужской
+                                    <input type="radio" name="gender" value="man" checked>
+                                </label>
+                                <label>Женский
+                                    <input type="radio" name="gender" value="woman">
+                                </label>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            <p>&copy; 2022-2023 Gang Bros</p>
+        </div>
+    </div>
 </body>
 </html>

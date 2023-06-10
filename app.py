@@ -33,6 +33,14 @@ def about():
     return render_template("about.html")
 
 
+@app.route('/upload', methods=['POST'])
+def upload():
+    data = request.form.get('gender')
+    if data:
+        return data
+    return "Данные отсутствуют или повреждены"
+
+
 # def predict(speech_array, sampling_rate):
 #     inputs = processor(speech_array, sampling_rate=sampling_rate, return_tensors="pt", padding=True)
 #     with torch.no_grad():

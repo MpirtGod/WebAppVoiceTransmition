@@ -33,6 +33,9 @@ def index():
 def about():
     return render_template("about.html")
 
+@app.route('/contacts')
+def contacts():
+    return render_template("contacts.html")
 
 @app.route("/js/<path:path>")
 def send_js(path):
@@ -75,4 +78,4 @@ def upload_audio():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

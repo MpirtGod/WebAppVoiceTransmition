@@ -1,17 +1,17 @@
 img {
-  width: 180px;
-  height: 180px;
-  border-radius: 5%;
+  width: 160px;
+  height: 160px;
   border: black 1px solid;
   float: left;
+  border-radius: 5px;
 }
 
 .photo {
-  padding-bottom: 120px;
+  padding-bottom: 110px;
 }
 
 .about_text {
-  margin-left: 220px;
+  margin-left: 200px;
   padding-top: 0;
 }
 

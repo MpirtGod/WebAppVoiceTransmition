@@ -146,7 +146,6 @@ async function getMedia(constraints) {
     });
 
     sendButton.addEventListener('click', function() {
-//        showLoader();
         let sources = document.getElementsByName('source');
         let genders = document.getElementsByName('gender');
         let sourceType;
@@ -161,6 +160,13 @@ async function getMedia(constraints) {
             alert("Выберите файл для распознавания!");
             return;
         }
+
+        if (sourceType === "record" && blob === undefined) {
+            alert("Чтобы распознать, сначала запишите речь!");
+            return;
+        }
+
+        showLoader();
 
         let request = new XMLHttpRequest();
         request.overrideMimeType('text/plain');

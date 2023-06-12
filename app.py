@@ -3,15 +3,11 @@
 # import sys
 # import librosa
 from flask import Flask, render_template, send_from_directory, request
+
 # from modelinit import ModelInit
 # from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
 
-# root_dir = os.path.dirname(os.path.abspath(__file__))
-# template_folder = os.path.join(root_dir, "templates")
-# js_dir = os.path.join(template_folder, 'js')
-# css_dir = os.path.join(template_folder, 'css')
-# img_dir = os.path.join(template_folder, 'images')
-#
+
 # model = ModelInit()
 
 app = Flask(__name__)
@@ -32,15 +28,28 @@ def index():
 def about():
     return render_template("about.html")
 
+
 @app.route('/project')
 def project():
     return render_template("project.html")
 
+
 @app.route('/upload', methods=['POST'])
 def upload():
-    data = request.form.get('gender')
-    if data:
-        return data
+    gender = request.form.get('gender')
+    record = request.files.get('record')
+    file = request.files.get('file')
+
+    if record:
+        with open('audio.wav', 'wb') as f:
+            f.write(record.read())
+        return "Запись принята!"
+
+    if file:
+        with open('audio.wav', 'wb') as f:
+            f.write(file.read())
+        return "Файл принят!"
+
     return "Данные отсутствуют или повреждены"
 
 

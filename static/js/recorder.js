@@ -19,6 +19,7 @@ let analyserNode;
 let sourceNode;
 let blob;
 let url;
+let file_upload = false;
 
 function drawLine() {
     canvasCtx.strokeStyle = '#483D8B';
@@ -57,6 +58,10 @@ function showLoader() {
 
 function hideLoader() {
     loaderWrapper.style.display = 'none';
+}
+
+function getRandomNumber(min, max) {
+    return Math.random() * (max - min) + min;
 }
 
 async function getMedia(constraints) {
@@ -116,6 +121,11 @@ async function getMedia(constraints) {
     });
 
     playButton.addEventListener('click', function() {
+        if (file_upload) {
+            url = URL.createObjectURL(fileButton.files[0]);
+            file_upload = false;
+        }
+
         if (url === undefined) { return; }
 
         recordButton.disabled = true;
@@ -145,6 +155,11 @@ async function getMedia(constraints) {
         audio.play();
     });
 
+    fileButton.addEventListener('click', function() {
+        playButton.disabled = false;
+        file_upload = true;
+    });
+
     sendButton.addEventListener('click', function() {
         let sources = document.getElementsByName('source');
         let genders = document.getElementsByName('gender');
@@ -171,6 +186,8 @@ async function getMedia(constraints) {
         let request = new XMLHttpRequest();
         request.overrideMimeType('text/plain');
         let fd = new FormData();
+        let randomID = Math.trunc(getRandomNumber(1, 1000));
+        console.log(randomID)
 
         if (sourceType != "file") {
             fd.append('file', blob);
@@ -179,17 +196,36 @@ async function getMedia(constraints) {
         }
 
         fd.append("gender", genderType)
+        fd.append("ID", randomID);
 
         request.onload = function() {
             if (request.status != 200) {
                 hideLoader();
                 alert("Произошла ошибка!");
             } else {
-                hideLoader();
 //                textArea.value = request.responseText;
+                playButton.disabled = false;
                 var blob = request.response;
                 url = URL.createObjectURL(blob);
-                alert("Синтезированный голос готов!")
+
+                var xhr = new XMLHttpRequest();
+                fd = new FormData();
+                fd.append("ID", randomID);
+
+                xhr.onload = function() {
+                    if (request.status != 200) {
+                        hideLoader();
+                        alert("Произошла ошибка!");
+                    } else {
+                        hideLoader();
+                        textArea.value = xhr.responseText;
+                    }
+                }
+
+                xhr.responseType = 'text';
+                xhr.open("POST", "/upload_text");
+                xhr.send(fd);
+                alert("Синтезированный голос готов!");
             }
         }
 

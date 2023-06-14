@@ -219,13 +219,13 @@ async function getMedia(constraints) {
                     } else {
                         hideLoader();
                         textArea.value = xhr.responseText;
+                        alert("Синтезированный голос готов!");
                     }
                 }
 
                 xhr.responseType = 'text';
                 xhr.open("POST", "/upload_text");
                 xhr.send(fd);
-                alert("Синтезированный голос готов!");
             }
         }
 

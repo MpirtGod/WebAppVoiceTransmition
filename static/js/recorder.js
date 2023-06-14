@@ -173,7 +173,7 @@ async function getMedia(constraints) {
         let fd = new FormData();
 
         if (sourceType != "file") {
-            fd.append('record', blob);
+            fd.append('file', blob);
         } else {
             fd.append("file", fileButton.files[0]);
         }
@@ -186,10 +186,19 @@ async function getMedia(constraints) {
                 alert("Произошла ошибка!");
             } else {
                 hideLoader();
-                textArea.value = request.responseText;
+//                textArea.value = request.responseText;
+                var blob = request.response;
+                url = URL.createObjectURL(blob);
+                alert("Синтезированный голос готов!")
             }
         }
 
+        request.onerror = function() {
+            hideLoader();
+            alert("Ошибка соединения");
+        }
+
+        request.responseType = 'blob';
         request.open("POST", "/upload");
         request.send(fd);
     });

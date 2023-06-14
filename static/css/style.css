@@ -33,7 +33,7 @@ body {
 }
 
 #recorder {
-    background-color: #DEB887;
+    background-color: #FFDAB9;
     border: 1px solid #000000;
     padding: 7px 7px;
     width: 225px;
@@ -47,8 +47,8 @@ body {
 }
 
 canvas {
-    border: 1px solid #202020;
-    background-color: #F5DEB3;
+    border: 1px solid #808080;
+    background-color: #FFFFFF;
     border-radius: 5px;
 }
 
@@ -111,6 +111,7 @@ canvas {
 
 form hr {
     margin-top: 20px;
+
 }
 
 form h3 {
@@ -118,7 +119,7 @@ form h3 {
 }
 
 form textarea {
-    width: 470px;
+    width: 471px;
     height: 100px;
     resize: none;
 }
